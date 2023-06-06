@@ -1,61 +1,48 @@
 import React, { useState } from 'react'
 import { ContainerForm, ContainerSignup, Input } from './styled'
-
+import { useForm } from '../../hooks/useForm'
 export default function Signup() {
-    const [nomeUsuario, setNomeUsuario] = useState("")
-    const [email, setEmail] = useState("")
-    const [senha, setSenha] = useState("")
-    const [confirmaSenha, setConfirmaSenha] = useState("")
-
-    const onChangeNome = (e) => {
-        setNomeUsuario(e.target.value)
-    }
-    const onChangeEmail = (e) => {
-        setEmail(e.target.value)
-    }
-    const onChangeSenha = (e) => {
-        setSenha(e.target.value)
-    }
-    const onChangeConfirmaSenha = (e) => {
-        setConfirmaSenha(e.target.value)
-    }
-
-    const enviarCadastro = () => {
-        //* EXTRA: validando a senha - ter certeza que o usuário sabe qual senha cadastrou
-        if (senha === confirmaSenha) {
-            console.log({nomeUsuario, email, senha, confirmaSenha})
-        }
-    }
+    const {form, onChangeInputs,cleanFields} = useForm({nomeUsuario:"",email:"",senha:"",confirmaSenha:""})
+    
+    const enviarCadastro = (e) => {
+        e.preventDefault()
+        console.log(form)
+        cleanFields()
+     }
 
     return (
         <ContainerSignup>
             <ContainerForm onSubmit={enviarCadastro}>
                 <label htmlFor='nome'>Nome de usuario:</label>
                 <Input
+                    name='nomeUsuario'
                     id='nome'
-                    value={nomeUsuario}
-                    onChange={onChangeNome}
+                    value={form.nomeUsuario}
+                    onChange={onChangeInputs}
                     placeholder="username"
                 />
                 <label htmlFor='email'>Email:</label>
                 <Input
+                    name='email'
                     id='email'
-                    value={email}
-                    onChange={onChangeEmail}
+                    value={form.email}
+                    onChange={onChangeInputs}
                     placeholder="nome@email.com"
                 />
                 <label htmlFor='senha'>Senha:</label>
                 <Input
+                    name='senha'
                     id='senha'
-                    value={senha}
-                    onChange={onChangeSenha}
+                    value={form.senha}
+                    onChange={onChangeInputs}
                     placeholder="Crie sua senha"
                 />
                 <label htmlFor='confirma-senha'>Confirmação de senha:</label>
                 <Input
+                    name='confirmaSenha'
                     id='confirma-senha'
-                    value={confirmaSenha}
-                    onChange={onChangeConfirmaSenha}
+                    value={form.confirmaSenha}
+                    onChange={onChangeInputs}
                     placeholder="Confirme a senha"
                 />
                 <button>Cadastrar</button>

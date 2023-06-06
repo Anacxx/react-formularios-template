@@ -2,22 +2,16 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { irParaCadastro } from '../../Routes/coordinator'
 import { ContainerForm, ContainerLogin, Input } from './styled'
-
+import { useForm } from '../../hooks/useForm'
 export default function Login() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const {form, onChangeInputs,cleanFields} = useForm({email:'',password:''})
+
   const navigate = useNavigate()
-
-  const onChangeEmail = (e) => {
-    setEmail(e.target.value)
-  }
-  const onChangeSenha = (e) => {
-    setPassword(e.target.value)
-  }
-
+  
   const enviaLogin = (e) => {
     e.preventDefault()
-    console.log({ email, password })
+    console.log(form)
+    cleanFields()
   }
 
   return (
@@ -25,17 +19,23 @@ export default function Login() {
       <ContainerForm onSubmit={enviaLogin}>
         <label htmlFor='email'>Email:</label>
         <Input
+          name='email'
           id='email'
-          value={email}
-          onChange={onChangeEmail}
+          value={form.email}
+          onChange={onChangeInputs}
           placeholder="nome@email.com"
+          required
+          type='email'
         />
         <label htmlFor='senha'>Senha:</label>
         <Input
+          name='password'
           id='senha'
-          value={password}
-          onChange={onChangeSenha}
+          value={form.password}
+          onChange={onChangeInputs}
           placeholder="Digite sua senha"
+          required
+          type='password'
         />
         <button>Fazer Login</button>
       </ContainerForm>
