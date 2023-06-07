@@ -1,12 +1,35 @@
 import React, { useState } from 'react'
 import { ContainerForm, ContainerSignup, Input } from './styled'
 import { useForm } from '../../hooks/useForm'
+import axios from 'axios'
+import { BASE_URL } from '../../constants/BASE_URL'
+import { useNavigate } from 'react-router-dom'
 export default function Signup() {
     const {form, onChangeInputs,cleanFields} = useForm({nomeUsuario:"",email:"",senha:"",confirmaSenha:""})
-    
+    const navigate = useNavigate()
     const enviarCadastro = (e) => {
         e.preventDefault()
-        console.log(form)
+        if (form.senha === form.confirmaSenha){
+            const dadosUsuario = {
+                username: form.nomeUsuario,
+                email: form.email,
+                password: form.password
+            }
+            axios.post(`${BASE_URL}/users/signup`,dadosUsuario)
+                .then((res) =>{
+                    console.log(res)
+                    localStorage.setItem('token',res.data.token)
+                    alert('ok')
+                    alert('Token:'+res.data.token)
+                })
+                .catch((error) =>{
+                    alert('deu errado')
+                    alert(error.response)
+                })
+        }else{
+            console.log("Senhas diferentes....")
+
+        }
         cleanFields()
      }
 
